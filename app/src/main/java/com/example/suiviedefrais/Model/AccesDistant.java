@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class AccesDistant implements AsyncResponse {
     // constante
-    private static final String SERVEURTOKEN = "https://gestion.brocanticke.com/api/auth/token/login";
+    private static final String SERVEUR = "http://192.168.56.1:8287/GsbApi/Api.php";
     // propriété
     private Control control;
 
@@ -61,7 +61,7 @@ public class AccesDistant implements AsyncResponse {
      * @param password le mot de passe a utilisé
      */
     public void connection(String username, String password){
-        AccesHTTP accesDonnes = new AccesHTTP(SERVEURTOKEN, "POST");
+        AccesHTTP accesDonnes = new AccesHTTP(SERVEUR, "POST");
         // lien de delegation
         accesDonnes.delegate = this;
         // ajout parametre
