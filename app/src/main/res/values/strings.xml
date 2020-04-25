@@ -25,4 +25,21 @@
     <string name="icone_recap_hf">Icone du récapitulatif des frais hors forfait</string>
     <string name="icone_transfert">Icone de la commande de transfert</string>
     <string name="icone_supp_hf">Icône de suppression d\'une ligne de frais</string>
+
+
+    <string name="frais_repas">Repas</string>
+    <string name="title_frais_repas">Frais de Repas</string>
+    <string name="title_frais_nuit">Frais de Nuitées</string>
+    <string name="frais_nuit">Nuitées</string>
+    <string name="title_frais_etape">Frais d\'étapes</string>
+    <string name="frais_etape">étapes</string>
+    <string name="title_activity_login">GSB - Connection</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 </resources>

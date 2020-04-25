@@ -10,6 +10,11 @@ public class KmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hf_recap);
+        setContentView(R.layout.activity_km);
+        init();
+    }
+
+    private void init() {
+
     }
 }

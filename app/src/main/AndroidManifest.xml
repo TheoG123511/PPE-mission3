@@ -1,5 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.suiviedefrais">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -7,16 +10,35 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".Vue.HfActivity" />
-        <activity android:name=".Vue.HfRecapActivity" />
-        <activity android:name=".Vue.KmActivity" />
-    <activity android:name=".Vue.MainActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+        android:theme="@style/AppTheme">
+        <activity android:name=".Vue.LoginActivity"></activity>
+        <activity
+            android:name=".Vue.EtapeActivity"
+            android:label="GSB - Frais d&apos;étape" />
+        <activity
+            android:name=".Vue.NuitActivity"
+            android:label="GSB - Frais Hotel" />
+        <activity
+            android:name=".Vue.activity_repas"
+            android:label="GSB - Frais de repas" />
+        <activity
+            android:name=".Vue.HfActivity"
+            android:label="GSB - Frais HF" />
+        <activity
+            android:name=".Vue.HfRecapActivity"
+            android:label="GSB - Récap Frais HF" />
+        <activity
+            android:name=".Vue.KmActivity"
+            android:label="GSB - Frais Km" />
+        <activity
+            android:name=".Vue.MainActivity"
+            android:label="GSB - Suivi des frais">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
