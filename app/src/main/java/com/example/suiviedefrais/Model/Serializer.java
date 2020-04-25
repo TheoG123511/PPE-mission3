@@ -1,7 +1,6 @@
-package fr.cned.emdsgil.suividevosfrais;
+package com.example.suiviedefrais.Model;
 
 import android.content.Context;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

@@ -1,4 +1,4 @@
-package fr.cned.emdsgil.suividevosfrais;
+package com.example.suiviedefrais.Model;
 
 import java.io.Serializable;
 

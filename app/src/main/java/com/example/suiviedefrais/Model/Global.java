@@ -1,10 +1,9 @@
-package fr.cned.emdsgil.suividevosfrais;
+package com.example.suiviedefrais.Model;
 
 import android.content.res.Resources;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
-
 import java.lang.reflect.Field;
 import java.util.Hashtable;
 
