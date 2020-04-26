@@ -74,7 +74,7 @@ class FraisMois implements Serializable {
     }
 
     public Integer getKm() {
-        return km;
+        return 0;
     }
 
     public void setKm(Integer km) {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.suiviedefrais.R;
 
@@ -17,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Permet d'initialiser l'activity
+     */
     private void init() {
         ecouteBtnMenuFraisKm();
         ecouteBtnMenuFraisHotel();
@@ -85,9 +89,17 @@ public class MainActivity extends AppCompatActivity {
     private void ecouteBtnMenuEnvoieDonnee(){
         (findViewById(R.id.cmdTransfert)).setOnClickListener(new ImageButton.OnClickListener() {
             public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, KmActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
+    }
+
+    /**
+     * Permet d'afficher un toast dans l'interface
+     * @param message le message a affiché
+     */
+    public void displayToast(String message){
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
