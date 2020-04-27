@@ -53,7 +53,7 @@ public class KmActivity extends AppCompatActivity {
         imgRetourMenuPrincipal();
         addOneBtnKm();
         lessOneBtnKm();
-        ValiderFraisBtnKm();
+        validerFraisBtnKm();
         control = Control.getInstance(this);
         updateFrais();
         dateChanged();
@@ -92,7 +92,7 @@ public class KmActivity extends AppCompatActivity {
         });
     }
 
-    private void ValiderFraisBtnKm(){
+    private void validerFraisBtnKm(){
         (findViewById(R.id.cmdKmValider)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
                 // on recupere les valeurs

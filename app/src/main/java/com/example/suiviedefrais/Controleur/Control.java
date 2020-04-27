@@ -6,8 +6,6 @@ import com.example.suiviedefrais.Model.Serializer;
 import com.example.suiviedefrais.Vue.LoginActivity;
 import android.content.Context;
 import android.util.Log;
-
-import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -152,7 +150,7 @@ public final class Control {
     public void insertDataIntoFraisF(Integer key, FraisMois fraisF) {
         listFraisMois.put(key, fraisF);
         Log.d("Controleur", "insertDataIntoFraisF -> " + listFraisMois.toString());
-        Log.d("Controleur", "insertDataIntoFraisF object param -> " + fraisF.getKm().toString());
+        // Log.d("Controleur", "insertDataIntoFraisF object param -> " + fraisF.getKm().toString());
         // on sauvegarde les donnees en local
         Serializer.serialize(listFraisMois, context);
     }

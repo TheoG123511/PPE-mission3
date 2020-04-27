@@ -1,5 +1,7 @@
 package com.example.suiviedefrais.Model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
