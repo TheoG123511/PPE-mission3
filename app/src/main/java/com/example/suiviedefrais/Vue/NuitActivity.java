@@ -1,6 +1,8 @@
 package com.example.suiviedefrais.Vue;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,6 +76,7 @@ public class NuitActivity extends AppCompatActivity {
 
     private void addOneBtnNuit(){
         (findViewById(R.id.cmdNuitPlus)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity += 1;
                 txtNuit.setText(String.format("%d", quantity));
@@ -83,6 +86,7 @@ public class NuitActivity extends AppCompatActivity {
 
     private void lessOneBtnNuit(){
         (findViewById(R.id.cmdNuitMoins)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity -= 1;
                 if (quantity < 0) {
@@ -93,6 +97,7 @@ public class NuitActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void updateFrais() {
         // on recupere les valeurs
         Integer year = datNuit.getYear();
@@ -120,11 +125,11 @@ public class NuitActivity extends AppCompatActivity {
                 Integer month = datNuit.getMonth();
                 // on genere la clee
                 Integer key = generateKey(year, month);
+                Integer nuit = Integer.parseInt(txtNuit.getText().toString());
                 // on recupere les donnees depuis le controleur
-                if (!control.checkIfKeyExist(key)){
+                if (!control.checkIfKeyExist(key) && nuit != 0){
                     // on creer l'object
-                    FraisMois frais = new FraisMois(year, month);
-                    Integer nuit = Integer.parseInt(txtNuit.getText().toString());
+                    FraisMois frais = new FraisMois(year, (month + 1));
                     frais.setNuitee(nuit);
                     Log.d("ValiderFraisNuit", "nuit = " + nuit.toString());
                     Log.d("ValiderFraisNuit", "nuit object = " + frais.getNuitee().toString());
@@ -134,7 +139,6 @@ public class NuitActivity extends AppCompatActivity {
                     // on recupere les donnees
                     FraisMois frais = control.getData(key);
                     if (!(frais == null)) {
-                        Integer nuit = Integer.parseInt(txtNuit.getText().toString());
                         frais.setNuitee(nuit);
                         control.insertDataIntoFraisF(key, frais);
                     }
@@ -145,7 +149,9 @@ public class NuitActivity extends AppCompatActivity {
     }
 
     private void backToMainMenu() {
-        Toast.makeText(NuitActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        if (quantity != 0) {
+            Toast.makeText(NuitActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        }
         Intent intent = new Intent(NuitActivity.this, MainActivity.class);
         startActivity(intent);
     }

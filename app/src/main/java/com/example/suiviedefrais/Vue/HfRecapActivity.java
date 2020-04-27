@@ -1,7 +1,6 @@
 package com.example.suiviedefrais.Vue;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,16 +9,13 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Model.FraisHf;
 import com.example.suiviedefrais.Model.Global;
 import com.example.suiviedefrais.R;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import static com.example.suiviedefrais.Outils.MesOutils.generateKey;
 
 
@@ -96,7 +92,7 @@ public class HfRecapActivity extends AppCompatActivity {
     }
 
     private void displayMessage(String message) {
-        Toast.makeText(HfRecapActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(HfRecapActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }
 

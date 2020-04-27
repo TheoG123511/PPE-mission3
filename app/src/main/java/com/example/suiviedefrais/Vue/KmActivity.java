@@ -1,6 +1,8 @@
 package com.example.suiviedefrais.Vue;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,11 +102,11 @@ public class KmActivity extends AppCompatActivity {
                 Integer month = datKm.getMonth();
                 // on genere la clee
                 Integer key = generateKey(year, month);
+                Integer km = Integer.parseInt(txtKm.getText().toString());
                 // on recupere les donnees depuis le controleur
-                if (!control.checkIfKeyExist(key)){
+                if (!control.checkIfKeyExist(key) && km != 0){
                     // on creer l'object
-                    FraisMois fraisKm = new FraisMois(year, month);
-                    Integer km = Integer.parseInt(txtKm.getText().toString());
+                    FraisMois fraisKm = new FraisMois(year, (month + 1));
                     fraisKm.setKm(km);
                     Log.d("ValiderFraisKm", "km = " + km.toString());
                     Log.d("ValiderFraisKm", "km object = " + fraisKm.getKm().toString());
@@ -114,7 +116,6 @@ public class KmActivity extends AppCompatActivity {
                     // on recupere les donnees
                     FraisMois fraisKm = control.getData(key);
                     if (!(fraisKm == null)) {
-                        Integer km = Integer.parseInt(txtKm.getText().toString());
                         fraisKm.setKm(km);
                         control.insertDataIntoFraisF(key, fraisKm);
                     }
@@ -124,13 +125,13 @@ public class KmActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void updateFrais() {
         // on recupere les valeurs
         Integer year = datKm.getYear();
         Integer month = datKm.getMonth();
         // on genere la clee
         Integer key = generateKey(year, month);
-        Log.d("KmActivity", "update annee = " + key.toString());
         // on recupere les donnees depuis le controleur
         if (control.checkIfKeyExist(key)){
             FraisMois fraisKm = control.getData(key);
@@ -144,7 +145,9 @@ public class KmActivity extends AppCompatActivity {
     }
 
     private void backToMainMenu() {
-        Toast.makeText(KmActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        if (quantity != 0) {
+            Toast.makeText(KmActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        }
         Intent intent = new Intent(KmActivity.this, MainActivity.class);
         startActivity(intent);
     }

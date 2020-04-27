@@ -5,6 +5,8 @@ import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Model.FraisMois;
 import com.example.suiviedefrais.Model.Global;
 import com.example.suiviedefrais.R;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,6 +75,7 @@ public class EtapeActivity extends AppCompatActivity {
 
     private void addOneBtnEtape(){
         (findViewById(R.id.cmdEtapePlus)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity += 1;
                 txtEtape.setText(String.format("%d", quantity));
@@ -82,6 +85,7 @@ public class EtapeActivity extends AppCompatActivity {
 
     private void lessOneBtnEtape(){
         (findViewById(R.id.cmdEtapeMoins)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity -= 1;
                 if (quantity < 0) {
@@ -92,6 +96,7 @@ public class EtapeActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void updateFrais() {
         // on recupere les valeurs
         Integer year = datEtape.getYear();
@@ -119,11 +124,11 @@ public class EtapeActivity extends AppCompatActivity {
                 Integer month = datEtape.getMonth();
                 // on genere la clee
                 Integer key = generateKey(year, month);
+                Integer etape = Integer.parseInt(txtEtape.getText().toString());
                 // on recupere les donnees depuis le controleur
-                if (!control.checkIfKeyExist(key)){
+                if (!control.checkIfKeyExist(key) && etape != 0){
                     // on creer l'object
-                    FraisMois frais = new FraisMois(year, month);
-                    Integer etape = Integer.parseInt(txtEtape.getText().toString());
+                    FraisMois frais = new FraisMois(year, (month + 1));
                     frais.setEtape(etape);
                     Log.d("ValiderFraisEtape", "etape = " + etape.toString());
                     Log.d("ValiderFraisEtape", "etape object = " + frais.getEtape().toString());
@@ -133,7 +138,6 @@ public class EtapeActivity extends AppCompatActivity {
                     // on recupere les donnees
                     FraisMois frais = control.getData(key);
                     if (!(frais == null)) {
-                        Integer etape = Integer.parseInt(txtEtape.getText().toString());
                         frais.setEtape(etape);
                         control.insertDataIntoFraisF(key, frais);
                     }
@@ -144,7 +148,9 @@ public class EtapeActivity extends AppCompatActivity {
     }
 
     private void backToMainMenu() {
-        Toast.makeText(EtapeActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        if (quantity != 0) {
+            Toast.makeText(EtapeActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        }
         Intent intent = new Intent(EtapeActivity.this, MainActivity.class);
         startActivity(intent);
     }

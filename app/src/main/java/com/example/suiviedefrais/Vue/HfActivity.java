@@ -22,6 +22,7 @@ public class HfActivity extends AppCompatActivity {
     private EditText txtHfMotif;
     private DatePicker datHf;
     private Control control;
+    boolean checkData = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,9 @@ public class HfActivity extends AppCompatActivity {
     private void imgRetourMenuPrincipal(){
         (findViewById(R.id.imgHfReturn)).setOnClickListener(new ImageButton.OnClickListener() {
             public void onClick(View v){
-                displayMessage("Frais Hors Forfait ajouter avec Succes !");
+                if (checkData) {
+                    displayMessage("Frais Hors Forfait ajouter avec Succes !");
+                }
                 Intent intent = new Intent(HfActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -80,7 +83,7 @@ public class HfActivity extends AppCompatActivity {
                 Integer year = datHf.getYear();
                 Integer month = datHf.getMonth();
                 Integer day = datHf.getDayOfMonth();
-                boolean checkData = false;
+
                 String motif = "";
                 float montant = 0;
                 try {
@@ -96,7 +99,7 @@ public class HfActivity extends AppCompatActivity {
                 // on recupere les donnees depuis le controleur
                 if (!control.checkIfKeyExist(key) && checkData){
                     // on creer l'object
-                    FraisMois frais = new FraisMois(year, month);
+                    FraisMois frais = new FraisMois(year, (month + 1));
                     // on insert le frais hf
                     frais.addFraisHf(montant, motif, day);
                     control.insertDataIntoFraisF(key, frais);

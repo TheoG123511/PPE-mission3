@@ -3,7 +3,11 @@ import android.util.Log;
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Outils.AccesHTTP;
 import com.example.suiviedefrais.Outils.AsyncResponse;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 
 public class AccesDistant implements AsyncResponse {
@@ -31,9 +35,14 @@ public class AccesDistant implements AsyncResponse {
         Log.d("serveur", "method ->" + method);
         try {
             JSONObject info = new JSONObject(output);
+            Log.d("serveur retour JSONObject", info.toString());
             String function = info.getString("Function");
             if (!info.has("Error")){
                 if (function.equals("connexion")) {
+                    control.setAuth(true);
+                    // on lance Main Activity
+                    control.runDashBoard(true, "");
+                } else if (function.equals("insertNewFrais")) {
                     control.setAuth(true);
                     // on lance Main Activity
                     control.runDashBoard(true, "");
@@ -64,37 +73,29 @@ public class AccesDistant implements AsyncResponse {
         // lien de delegation
         accesDonnes.delegate = this;
         // ajout parametre
-        accesDonnes.addParam("username", username);
-        accesDonnes.addParam("password", password);
+        accesDonnes.addParam("username", username, true);
+        accesDonnes.addParam("password", password, true);
         accesDonnes.execute();
     }
 
     /***
-     * Permet d'envoyer une requete
+     * Permet d'envoyer les donnees au serveur
      * @param method la methode a utilisé dans la requete
-     * @param url l'url a utilisé
+     * @param data les donnees a envoyer au server concernant les frais
      */
-    public void sendRequest(String method, String url){
-        AccesHTTP accesDonnes = new AccesHTTP(url, method);
+    public void sendData(String method, JSONObject data){
+        AccesHTTP accesDonnes = new AccesHTTP(SERVEUR, method);
         // lien de delegation
         accesDonnes.delegate = this;
-        // on recupere le token
+        control.setUsername("lvillachane");
+        control.setPassword("jux7g");
+        // on insert les donnees de connection
+        accesDonnes.addParam("username", control.getUsername(), true);
+        accesDonnes.addParam("password", control.getPassword(), true);
+        // on insert les donnees concernant les frais
+        accesDonnes.addParam("AddFrais", data.toString(), false);
+        // on envoye la requete
         accesDonnes.execute();
-    }
-
-    /***
-     * Permet de verifié si toutes les valeur d'un Boolean[] sont vrai
-     * @param toCheckArray l'array a vérifié
-     * @return True si toutes les valeurs sont vrai sinon false
-     */
-    private boolean checkOutputServer(boolean[] toCheckArray){
-        for (int i = 0; i< toCheckArray.length; i++) {
-            Log.d("checkOutputServer",  String.format("%b", toCheckArray[i]));
-            if (!toCheckArray[i]){
-                return false;
-            }
-        }
-        return true;
     }
 
 }

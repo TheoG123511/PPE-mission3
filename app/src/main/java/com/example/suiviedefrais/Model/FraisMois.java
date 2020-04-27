@@ -2,8 +2,12 @@ package com.example.suiviedefrais.Model;
 
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import static com.example.suiviedefrais.Outils.MesOutils.generateKey;
 
 /**
  * Classe métier contenant les informations des frais d'un mois
@@ -101,6 +105,34 @@ public class FraisMois implements Serializable {
 
     public ArrayList<FraisHf> getLesFraisHf() {
         return lesFraisHf;
+    }
+
+
+    public JSONObject getJsonDataForSend() {
+        JSONObject data = new JSONObject();
+        try {
+            // insertion des frais forfaitaire
+            data.put("Date", generateKey(getAnnee(), (getMois() - 1)));
+            data.put("Year", getAnnee());
+            data.put("Month", getMois());
+            data.put("KM", this.getKm());
+            data.put("NUI", this.getNuitee());
+            data.put("REP", this.getRepas());
+            data.put("ETP", this.getEtape());
+            // ajout des frais hors forfait
+            for (int i = 0; i < this.getLesFraisHf().size(); i++) {
+                JSONObject HfFrais = new JSONObject();
+                HfFrais.put("Jour", this.getLesFraisHf().get(i).getJour().toString());
+                HfFrais.put("Motif", this.getLesFraisHf().get(i).getMotif());
+                HfFrais.put("Montant", this.getLesFraisHf().get(i).getMontant().toString());
+                data.put("Hf-" + i, HfFrais);
+            }
+            Log.d("FraisMois", "Fonction getJsonDataForSend() return : " + data.toString());
+            return data;
+        } catch (Exception e) {
+            Log.d("FraisMois", "Erreur dans la fonction -> getJsonDataForSend() : Message : " + e.getMessage());
+            return null;
+        }
     }
 
 }

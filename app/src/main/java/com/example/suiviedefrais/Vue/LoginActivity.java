@@ -1,5 +1,6 @@
 package com.example.suiviedefrais.Vue;
 import com.example.suiviedefrais.Controleur.Control;
+import com.example.suiviedefrais.Model.FraisMois;
 import com.example.suiviedefrais.R;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
@@ -12,6 +13,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -71,13 +78,14 @@ public class LoginActivity extends AppCompatActivity {
      * Verifie si l'utilisateur est arriver a se connecter, si oui lance le tableaux de bord
      */
     public void isConnected(){
+        txtUsername.setText("");
+        txtPassword.setText("");
         if (controle.getAuth()){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }else {
-            txtUsername.setText("");
-            txtPassword.setText("");
+            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //startActivity(intent);
+           // si on est arriver a se connecter on envoie les donnees
+            controle.sendDataToServer();
         }
     }
 
@@ -89,9 +97,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 btnLogin.setEnabled(false);
                 try{
-                    controle.connection(txtUsername.getText().toString(), txtPassword.getText().toString());
+                    //controle.connection(txtUsername.getText().toString(), txtPassword.getText().toString());
+
+                    Map<Integer, FraisMois> map = controle.getListFraisMois();
+                    for (Map.Entry<Integer, FraisMois> entry : map.entrySet()) {
+                        Integer key = entry.getKey();
+                        FraisMois value = entry.getValue();
+                        Log.d("LoginActivity", "Key = " + key.toString());
+                        value.getJsonDataForSend();
+                    }
+                    controle.sendDataToServer();
                 }catch (Exception e){
                     Log.d("LoginActivity", "Erreur dans la fonction listenOnBtnLogin() -> message : " + e.getMessage());
+                    displayToast("Une Erreur c'est produite, Merci de remplir tous les champs !");
                 }
             }
         });

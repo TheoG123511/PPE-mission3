@@ -154,36 +154,17 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <ImageButton
+            android:id="@+id/cmdTransfert"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.25">
+            android:layout_gravity="center"
+            android:layout_weight="0.25"
+            android:background="@null"
+            android:contentDescription="@string/icone_transfert"
+            android:scaleType="fitCenter"
+            android:src="@drawable/transfert" />
 
-            <ImageButton
-                android:id="@+id/cmdTransfert"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="0.25"
-                android:background="@null"
-                android:contentDescription="@string/icone_transfert"
-                android:scaleType="fitCenter"
-                android:src="@drawable/transfert" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25">
-            <ImageButton
-                android:id="@+id/btnDisconnect"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:scaleType="fitCenter"
-                android:src="@drawable/disconnect"/>
-    </LinearLayout>
     </LinearLayout>
 </LinearLayout>
 

@@ -6,6 +6,9 @@ import com.example.suiviedefrais.Model.Serializer;
 import com.example.suiviedefrais.Vue.LoginActivity;
 import android.content.Context;
 import android.util.Log;
+
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +77,7 @@ public final class Control {
         if (state){
             setAuth(true);
             // on deserialise les donnees
-            recupSerialize(context);
+            //recupSerialize(context);
             ((LoginActivity) getMainActivity()).isConnected();
         }else {
             setAuth(false);
@@ -111,7 +114,7 @@ public final class Control {
         accesDistant.connection(username, password);
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -119,7 +122,7 @@ public final class Control {
         this.username = username;
     }
 
-    private String getPassword() {
+    public String getPassword() {
         return password;
     }
 
@@ -130,14 +133,24 @@ public final class Control {
     private static void recupSerialize(Context context){
 
         listFraisMois = (HashMap) Serializer.deSerialize(context);
+        //listFraisMois = new HashMap<>();
+        //Serializer.serialize(listFraisMois, context);
         Log.d("Controleur", "recupSerialize listefraisMois recuperer");
             // teste
         Calendar c = Calendar.getInstance();
         Integer key = generateKey(c.get(Calendar.YEAR), c.get(Calendar.MONTH));
-        Log.d("Controleur", "recupSerialize listefraisMois recuperer String Object -> " + listFraisMois.toString());
-        Log.d("Controleur", "recupSerialize listefraisMois recuperer key -> " + key.toString());
+        try {
+            Log.d("Controleur", "recupSerialize listefraisMois recuperer String Object -> " + listFraisMois.toString());
+        } catch (NullPointerException e){
+            // le fichier n'existe pas ou les donnees contenu dedans pose un probleme on remes tous a zero
+            Log.d("Controleur", "Une erreur c est produite sur la deserialisation");
+            listFraisMois = new HashMap<>();
+
+            //listFraisMois.put(key, new FraisMois(c.get(Calendar.YEAR), c.get(Calendar.MONTH)));
+        }
 
     }
+
 
     public boolean checkIfKeyExist(Integer key) {
         try {
@@ -149,10 +162,12 @@ public final class Control {
 
     public void insertDataIntoFraisF(Integer key, FraisMois fraisF) {
         listFraisMois.put(key, fraisF);
-        Log.d("Controleur", "insertDataIntoFraisF -> " + listFraisMois.toString());
-        // Log.d("Controleur", "insertDataIntoFraisF object param -> " + fraisF.getKm().toString());
         // on sauvegarde les donnees en local
         Serializer.serialize(listFraisMois, context);
+    }
+
+    public Map<Integer, FraisMois> getListFraisMois() {
+        return listFraisMois;
     }
 
     public FraisMois getData(Integer key) {
@@ -163,4 +178,19 @@ public final class Control {
         return null;
     }
 
+    public void sendDataToServer() {
+        Map<Integer, FraisMois> map = this.getListFraisMois();
+        for (Map.Entry<Integer, FraisMois> entry : map.entrySet()) {
+            Integer key = entry.getKey();
+            Log.d("Controleur", "Fonction sendDataToServer() -> Key = " + key.toString());
+            JSONObject frais = entry.getValue().getJsonDataForSend();
+            // si aucune erreur ne c'est produite
+            if (frais != null) {
+                accesDistant.sendData("POST", frais);
+            }
+
+
+        }
+
+    }
 }

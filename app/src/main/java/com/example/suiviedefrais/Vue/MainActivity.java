@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         ecouteBtnMenuFraisHf();
         ecouteBtnMenuFraisRecap();
         ecouteBtnMenuEnvoieDonnee();
-        ecouteBtnDisconnect();
     }
 
     private void ecouteBtnMenuFraisKm(){
@@ -97,14 +96,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void ecouteBtnDisconnect(){
-        (findViewById(R.id.btnDisconnect)).setOnClickListener(new ImageButton.OnClickListener() {
-            public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
 
     /**
      * Permet d'afficher un toast dans l'interface

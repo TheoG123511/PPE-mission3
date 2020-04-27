@@ -36,15 +36,26 @@ public class AccesHTTP extends AsyncTask<String, Integer, Long> {
      * Construction de la chaîne de paramètres à envoyer au serveur
      * @param nom Le nom du parametre
      * @param valeur La valeur a y associé
+     * @param encode si on veut encoder le paramètre
      */
-    public void addParam(String nom, String valeur) {
+    public void addParam(String nom, String valeur, boolean encode) {
         try {
             if (parametres.equals("")) {
                 // premier paramètre
-                parametres = URLEncoder.encode(nom, "UTF-8") + "=" + URLEncoder.encode(valeur, "UTF-8");
+                if (encode) {
+                    parametres = URLEncoder.encode(nom, "UTF-8") + "=" + URLEncoder.encode(valeur, "UTF-8");
+                }else {
+                    parametres = nom + "=" + valeur;
+                }
+
             }else{
                 // paramètres suivants (séparés par &)
-                parametres += "&" + URLEncoder.encode(nom, "UTF-8") + "=" + URLEncoder.encode(valeur, "UTF-8");
+                if (encode) {
+                    parametres += "&" + URLEncoder.encode(nom, "UTF-8") + "=" + URLEncoder.encode(valeur, "UTF-8");
+                } else {
+                    parametres += "&" + nom + "=" + valeur;
+                }
+
             }
         } catch (UnsupportedEncodingException e) {
             Log.d("AccesHttp", "Erreur dans la fonction : addParam()");

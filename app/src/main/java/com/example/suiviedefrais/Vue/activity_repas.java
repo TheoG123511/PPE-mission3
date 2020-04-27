@@ -2,6 +2,7 @@ package com.example.suiviedefrais.Vue;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,6 +76,7 @@ public class activity_repas extends AppCompatActivity {
 
     private void addOneBtnRepas(){
         (findViewById(R.id.cmdRepasPlus)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity += 1;
                 txtRepas.setText(String.format("%d", quantity));
@@ -94,6 +96,7 @@ public class activity_repas extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void updateFrais() {
         // on recupere les valeurs
         Integer year = dateRepas.getYear();
@@ -121,11 +124,11 @@ public class activity_repas extends AppCompatActivity {
                 Integer month = dateRepas.getMonth();
                 // on genere la clee
                 Integer key = generateKey(year, month);
+                Integer repas = Integer.parseInt(txtRepas.getText().toString());
                 // on recupere les donnees depuis le controleur
-                if (!control.checkIfKeyExist(key)){
+                if (!control.checkIfKeyExist(key) && repas != 0){
                     // on creer l'object
-                    FraisMois frais = new FraisMois(year, month);
-                    Integer repas = Integer.parseInt(txtRepas.getText().toString());
+                    FraisMois frais = new FraisMois(year, (month + 1));
                     frais.setEtape(repas);
                     Log.d("ValiderFraisRepas", "repas = " + repas.toString());
                     Log.d("ValiderFraisRepas", "repas object = " + frais.getRepas().toString());
@@ -135,7 +138,6 @@ public class activity_repas extends AppCompatActivity {
                     // on recupere les donnees
                     FraisMois frais = control.getData(key);
                     if (!(frais == null)) {
-                        Integer repas = Integer.parseInt(txtRepas.getText().toString());
                         frais.setRepas(repas);
                         control.insertDataIntoFraisF(key, frais);
                     }
@@ -146,7 +148,9 @@ public class activity_repas extends AppCompatActivity {
     }
 
     private void backToMainMenu() {
-        Toast.makeText(activity_repas.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        if (quantity != 0) {
+            Toast.makeText(activity_repas.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();
+        }
         Intent intent = new Intent(activity_repas.this, MainActivity.class);
         startActivity(intent);
     }
