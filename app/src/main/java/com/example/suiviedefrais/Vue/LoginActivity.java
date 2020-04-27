@@ -2,7 +2,6 @@ package com.example.suiviedefrais.Vue;
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.R;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,8 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        controle = Control.getInstance(this);
-        // controle.setMainActivity(this);
+        controle.setMainActivity(this);
         listenOnBtnLogin();
     }
 
@@ -74,11 +71,13 @@ public class LoginActivity extends AppCompatActivity {
      * Verifie si l'utilisateur est arriver a se connecter, si oui lance le tableaux de bord
      */
     public void isConnected(){
-        // controle.getAuth()
-        if (true){
+        if (controle.getAuth()){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+        }else {
+            txtUsername.setText("");
+            txtPassword.setText("");
         }
     }
 
@@ -86,11 +85,11 @@ public class LoginActivity extends AppCompatActivity {
      * Ecoute le click sur l'ImageButton btnLogin, permet de se connecter a l'application
      */
     private void listenOnBtnLogin(){
-        btnLogin.setOnClickListener(new ImageButton.OnClickListener() {
+        btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
                 btnLogin.setEnabled(false);
                 try{
-                    // controle.connection(txtUsername.getText().toString(), txtPassword.getText().toString());
+                    controle.connection(txtUsername.getText().toString(), txtPassword.getText().toString());
                 }catch (Exception e){
                     Log.d("LoginActivity", "Erreur dans la fonction listenOnBtnLogin() -> message : " + e.getMessage());
                 }

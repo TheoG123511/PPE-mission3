@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
      * Permet d'initialiser l'activity
      */
     private void init() {
+        // ecoute des click sur les differents ImgButton du menu principal de l'application
         ecouteBtnMenuFraisKm();
         ecouteBtnMenuFraisHotel();
         ecouteBtnMenuFraisRepas();
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         ecouteBtnMenuFraisHf();
         ecouteBtnMenuFraisRecap();
         ecouteBtnMenuEnvoieDonnee();
+        ecouteBtnDisconnect();
     }
 
     private void ecouteBtnMenuFraisKm(){
@@ -95,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void ecouteBtnDisconnect(){
+        (findViewById(R.id.btnDisconnect)).setOnClickListener(new ImageButton.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     /**
      * Permet d'afficher un toast dans l'interface
      * @param message le message a affiché
@@ -102,4 +113,5 @@ public class MainActivity extends AppCompatActivity {
     public void displayToast(String message){
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
+
 }

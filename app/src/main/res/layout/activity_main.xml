@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +10,7 @@
     android:orientation="vertical"
     android:weightSum="1"
     tools:context=".Vue.MainActivity"
-    tools:menu="@menu/main_menu">
+    tools:menu="@menu/main">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -150,21 +151,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.25"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/cmdTransfert"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.25"
-            android:background="@null"
-            android:contentDescription="@string/icone_transfert"
-            android:scaleType="fitCenter"
-            android:src="@drawable/transfert" />
+            android:layout_weight="0.25">
 
+            <ImageButton
+                android:id="@+id/cmdTransfert"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.25"
+                android:background="@null"
+                android:contentDescription="@string/icone_transfert"
+                android:scaleType="fitCenter"
+                android:src="@drawable/transfert" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25">
+            <ImageButton
+                android:id="@+id/btnDisconnect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/disconnect"/>
     </LinearLayout>
-
+    </LinearLayout>
 </LinearLayout>
 

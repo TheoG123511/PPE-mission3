@@ -7,13 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Hashtable;
 
 /**
  * Classe qui permet de sérialiser et désérialiser des objets
  * @author Emds
  *
  */
-abstract class Serializer {
+public abstract class Serializer {
 
 	/**
 	 * Sérialisation d'un objet
@@ -50,9 +51,9 @@ abstract class Serializer {
 			try {
 				ois = new ObjectInputStream(file);
 				try {
-					Object object = ois.readObject() ;
-					ois.close() ;
-					return object ;
+					Object object = ois.readObject();
+					ois.close();
+					return object;
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -65,7 +66,37 @@ abstract class Serializer {
 			// fichier non trouvé
 			e.printStackTrace();
 		}
-		return null ;		
+		return null;
 	}
-	
+
+	/**
+	 * Désérialisation d'un objet
+	 * @param context Accès au contexte de l'application
+	 * @return Objet déserialisé
+	 */
+	public static Hashtable deSerialize2(Context context) {
+		try {
+			FileInputStream file = context.openFileInput(Global.filename) ;
+			ObjectInputStream ois;
+			try {
+				ois = new ObjectInputStream(file);
+				try {
+					// Object object = ois.readObject();
+					Hashtable h = (Hashtable) ois.readObject();
+					ois.close();
+					return h;
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// fichier non trouvé
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

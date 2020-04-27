@@ -3,16 +3,12 @@ import android.util.Log;
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Outils.AccesHTTP;
 import com.example.suiviedefrais.Outils.AsyncResponse;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.ArrayList;
-
 
 
 public class AccesDistant implements AsyncResponse {
     // constante
-    private static final String SERVEUR = "http://192.168.56.1:8287/GsbApi/Api.php";
+    private static final String SERVEUR = "http://192.168.56.1/GsbApi/Api.php";
     // propriété
     private Control control;
 
@@ -32,26 +28,29 @@ public class AccesDistant implements AsyncResponse {
     @Override
     public void processFinish(String output, String url, String method) {
         Log.d("serveur", "****************" + output);
-        Log.d("serveur", "->" + url);
         Log.d("serveur", "method ->" + method);
-        if (url.contains("/api/auth/token/login")){
-            try {
-                JSONObject info = new JSONObject(output);
-
-            } catch (NullPointerException e){
-                Log.d("AccesDistant", "Erreur dans la fonction processFinish() -> message : " + e.getMessage());
-
-            } catch (Exception e) {
-
+        try {
+            JSONObject info = new JSONObject(output);
+            String function = info.getString("Function");
+            if (!info.has("Error")){
+                if (function.equals("connexion")) {
+                    control.setAuth(true);
+                    // on lance Main Activity
+                    control.runDashBoard(true, "");
+                }
+            } else {
+                if (function.equals("connexion")) {
+                    control.setAuth(false);
+                    // on remet username et password a zero
+                    control.setUsername("");
+                    control.setPassword("");
+                    // on affiche un message d'erreur
+                    control.runDashBoard(false, String.format("%s", info.getString("Error")));
+                }
             }
-        }
-        else if (url.contains("/api/update/order/")){
-            try {
-                JSONObject info = new JSONObject(output);
-
-            } catch (JSONException e) {
-                Log.d("Erreur", "Conversion jSON impossible : "+ e.toString());
-            }
+            Log.d("AccesDistant -> Output", info.toString());
+        } catch (Exception e){
+            Log.d("AccesDistant", "Erreur dans la fonction processFinish() -> message : " + e.getMessage());
         }
     }
 
