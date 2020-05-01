@@ -107,7 +107,6 @@ public class FraisMois implements Serializable {
         return lesFraisHf;
     }
 
-
     public JSONObject getJsonDataForSend() {
         JSONObject data = new JSONObject();
         try {

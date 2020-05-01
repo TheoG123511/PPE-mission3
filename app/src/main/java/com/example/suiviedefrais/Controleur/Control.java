@@ -71,18 +71,15 @@ public final class Control {
     /***
      * Permet de mettre a jour l'activity MainActivity apres le retour du serveur
      * @param state l'etat du retour (true succes, false erreur)
-     * @param message le message a affiché ( a laisse vide en cas de succes)
      */
-    public void runDashBoard(Boolean state, String message){
-        if (state){
-            setAuth(true);
-            // on deserialise les donnees
-            //recupSerialize(context);
-            ((LoginActivity) getMainActivity()).isConnected();
-        }else {
-            setAuth(false);
-            ((LoginActivity) getMainActivity()).isConnected();
-            ((LoginActivity) getMainActivity()).displayToast(message);
+    public void runDashBoard(Boolean state){
+        setAuth(state);
+        ((LoginActivity) getMainActivity()).isConnected();
+    }
+
+    public void displayMessageInLogin(String message, Boolean stateBtn){
+        ((LoginActivity) getMainActivity()).displayToast(message);
+        if (stateBtn) {
             ((LoginActivity) getMainActivity()).enabledBtnLogin();
         }
     }
@@ -151,7 +148,6 @@ public final class Control {
 
     }
 
-
     public boolean checkIfKeyExist(Integer key) {
         try {
             return listFraisMois.containsKey(key);
@@ -179,18 +175,32 @@ public final class Control {
     }
 
     public void sendDataToServer() {
-        Map<Integer, FraisMois> map = this.getListFraisMois();
-        for (Map.Entry<Integer, FraisMois> entry : map.entrySet()) {
-            Integer key = entry.getKey();
-            Log.d("Controleur", "Fonction sendDataToServer() -> Key = " + key.toString());
-            JSONObject frais = entry.getValue().getJsonDataForSend();
-            // si aucune erreur ne c'est produite
-            if (frais != null) {
-                accesDistant.sendData("POST", frais);
+        // on verifie si la liste n'est pas vide
+        if (getLenListFraisMois() > 0) {
+            Map<Integer, FraisMois> map = this.getListFraisMois();
+            for (Map.Entry<Integer, FraisMois> entry : map.entrySet()) {
+                Integer key = entry.getKey();
+                Log.d("Controleur", "Fonction sendDataToServer() -> Key = " + key.toString());
+                JSONObject frais = entry.getValue().getJsonDataForSend();
+                // si aucune erreur ne c'est produite
+                if (frais != null) {
+                    accesDistant.sendData("POST", frais);
+                }
             }
-
-
+        } else {
+            displayMessageInLogin("Une erreur c'est produite aucune donnees sauvegarder. Syncronisation avec le serveur impossible !", true);
         }
 
+    }
+
+    public void reinitializeData() {
+        // on reinitialise l'object
+        listFraisMois = new HashMap<>();
+        // on le sauvegarde
+        Serializer.serialize(listFraisMois, context);
+    }
+
+    public Integer getLenListFraisMois(){
+        return listFraisMois.size();
     }
 }

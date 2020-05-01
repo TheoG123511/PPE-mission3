@@ -3,11 +3,11 @@ import android.util.Log;
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Outils.AccesHTTP;
 import com.example.suiviedefrais.Outils.AsyncResponse;
-
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class AccesDistant implements AsyncResponse {
@@ -15,7 +15,7 @@ public class AccesDistant implements AsyncResponse {
     private static final String SERVEUR = "http://192.168.56.1/GsbApi/Api.php";
     // propriété
     private Control control;
-
+    private List<String> list = new ArrayList<String>();
     /***
      * Constructeur de la classe
      */
@@ -37,27 +37,77 @@ public class AccesDistant implements AsyncResponse {
             JSONObject info = new JSONObject(output);
             Log.d("serveur retour JSONObject", info.toString());
             String function = info.getString("Function");
-            if (!info.has("Error")){
-                if (function.equals("connexion")) {
-                    control.setAuth(true);
-                    // on lance Main Activity
-                    control.runDashBoard(true, "");
+            if (function.equals("connexion")) {
+                if (info.has("Error")) {
+                    control.displayMessageInLogin(String.format("%s", info.getString("Error")), true);
+                }else {
+                    // on envoie les donnees on commence la syncronisation avec le serveur distant
+                    control.displayMessageInLogin("Démarrage de la syncronisation avec le serveur distant.", false);
+                    control.sendDataToServer();
+                }
                 } else if (function.equals("insertNewFrais")) {
-                    control.setAuth(true);
-                    // on lance Main Activity
-                    control.runDashBoard(true, "");
+
+                    Log.d("AccesDistant", "Fonction insertNewFrais detected -> " + output.toString());
+                    int keyFrais = info.getInt("KeyObject");
+                    String year = info.getString("Year");
+                    String month = info.getString("Month");
+                    Log.d("AccesDistant", "keyObject = " + Integer.toString(keyFrais));
+                    JSONObject KM = info.getJSONObject("KM");
+                    if (KM.has("Error")) {
+                        String error = KM.getString("Error");
+                        list.add(String.format("[%s-%s] Frais Km -> %s", month,  year, error));
+                    }
+                    JSONObject REP = info.getJSONObject("REP");
+                    if (REP.has("Error")) {
+                        String error = REP.getString("Error");
+                        list.add(String.format("[%s-%s] Frais de Repas -> %s", month,  year, error));
+                    }
+                    JSONObject ETP = info.getJSONObject("ETP");
+                    if (ETP.has("Error")) {
+                        String error = ETP.getString("Error");
+                        list.add(String.format("[%s-%s] Frais d'etape -> %s", month,  year, error));
+                    }
+                    JSONObject NUI = info.getJSONObject("NUI");
+                    if (NUI.has("Error")) {
+                        String error = NUI.getString("Error");
+                        list.add(String.format("[%s-%s] Frais de Nuitée -> %s", month,  year, error));
+                    }
+                    Log.d("AccesDistant", "KM = " + KM.toString() + "\nREP = " + REP.toString() + "\nETP = " + ETP.toString() + "\nNUI = " + NUI.toString());
+                    Log.d("AccesDistant", "List data len = " + control.getLenListFraisMois().toString());
+                    // on verifie si l'object a des frais hf
+                    try {
+                        JSONObject jsonObject = info.getJSONObject("fraisHorsForfait");
+                        Iterator<String> keys = jsonObject.keys();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            if (jsonObject.get(key) instanceof JSONObject) {
+                                if (((JSONObject) jsonObject.get(key)).has("Error")) {
+                                    String date = ((JSONObject) jsonObject.get(key)).getString("date");
+                                    String error = ((JSONObject) jsonObject.get(key)).getString("Error");
+                                    list.add(String.format("[%s] Frais Hors Forfait -> %s", date, error));
+                                }
+
+                                Log.d("AccesDistant While", "Data = " + jsonObject.get(key).toString());
+
+                            }
+                        }
+                    } catch (JSONException e) {
+                        Log.d("AccesDistant", "Cette object n'a pas de frais hors forfait");
+                    }
+                    // on supprime l'object
+                    control.getListFraisMois().remove(keyFrais);
+                    control.displayMessageInLogin(listToString(list), false);
+                    // on a fini la syncronisation
+                    if (control.getLenListFraisMois() == 0){
+                        // on reinitialise les donnees serializer
+                        Log.d("AccesDistant", "Fin des donnees a syncro");
+                        control.reinitializeData();
+                        control.setAuth(true);
+                        // on lance Main Activity
+                        control.displayMessageInLogin("Syncronisation effectuer avec Succes !", false);
+                        control.runDashBoard(true);
+                    }
                 }
-            } else {
-                if (function.equals("connexion")) {
-                    control.setAuth(false);
-                    // on remet username et password a zero
-                    control.setUsername("");
-                    control.setPassword("");
-                    // on affiche un message d'erreur
-                    control.runDashBoard(false, String.format("%s", info.getString("Error")));
-                }
-            }
-            Log.d("AccesDistant -> Output", info.toString());
         } catch (Exception e){
             Log.d("AccesDistant", "Erreur dans la fonction processFinish() -> message : " + e.getMessage());
         }
@@ -69,6 +119,7 @@ public class AccesDistant implements AsyncResponse {
      * @param password le mot de passe a utilisé
      */
     public void connection(String username, String password){
+        setList(new ArrayList<String>());
         AccesHTTP accesDonnes = new AccesHTTP(SERVEUR, "POST");
         // lien de delegation
         accesDonnes.delegate = this;
@@ -87,8 +138,8 @@ public class AccesDistant implements AsyncResponse {
         AccesHTTP accesDonnes = new AccesHTTP(SERVEUR, method);
         // lien de delegation
         accesDonnes.delegate = this;
-        control.setUsername("lvillachane");
-        control.setPassword("jux7g");
+        //control.setUsername("lvillachane");
+        //control.setPassword("jux7g");
         // on insert les donnees de connection
         accesDonnes.addParam("username", control.getUsername(), true);
         accesDonnes.addParam("password", control.getPassword(), true);
@@ -98,4 +149,17 @@ public class AccesDistant implements AsyncResponse {
         accesDonnes.execute();
     }
 
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+
+    private String listToString(List<String> listError){
+        String listString = "";
+        for (String s : list)
+        {
+            listString += String.format("%s\n", s);
+        }
+        setList(new ArrayList<String>());
+        return listString;
+    }
 }

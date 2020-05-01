@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Vue.LoginActivity"
-            android:label="GSB - Transfert des données" />
+            android:label="GSB - Transfert des données"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".Vue.EtapeActivity"
             android:label="GSB - Frais d&apos;étape" />

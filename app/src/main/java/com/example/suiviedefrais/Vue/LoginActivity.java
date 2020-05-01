@@ -13,12 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-
-import java.net.URLEncoder;
 import java.util.Map;
-import java.util.Objects;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
      * Permet d'initialiser l'activity
      */
     private void init() {
-        hideKeyboard(this);
         controle = Control.getInstance(this);
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
@@ -47,17 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         listenOnBtnLogin();
     }
 
-    /**
-     * Permet de ne pas ouvrir le clavier virtuel au lancement de l'activity
-     * @param activity L'activity concerner
-     */
-    public void hideKeyboard(Activity activity) {
-        InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (activity.getCurrentFocus() != null) {
-            inputManager.hideSoftInputFromWindow(activity.getCurrentFocus()
-                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
 
     /**
      * Permet de desactivé le button de connection
@@ -81,11 +65,11 @@ public class LoginActivity extends AppCompatActivity {
         txtUsername.setText("");
         txtPassword.setText("");
         if (controle.getAuth()){
-            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            //startActivity(intent);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
            // si on est arriver a se connecter on envoie les donnees
-            controle.sendDataToServer();
+            //controle.sendDataToServer();
         }
     }
 
@@ -98,15 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 btnLogin.setEnabled(false);
                 try{
                     //controle.connection(txtUsername.getText().toString(), txtPassword.getText().toString());
-
-                    Map<Integer, FraisMois> map = controle.getListFraisMois();
-                    for (Map.Entry<Integer, FraisMois> entry : map.entrySet()) {
-                        Integer key = entry.getKey();
-                        FraisMois value = entry.getValue();
-                        Log.d("LoginActivity", "Key = " + key.toString());
-                        value.getJsonDataForSend();
-                    }
-                    controle.sendDataToServer();
+                    controle.connection("lvillachane", "jux7g");
                 }catch (Exception e){
                     Log.d("LoginActivity", "Erreur dans la fonction listenOnBtnLogin() -> message : " + e.getMessage());
                     displayToast("Une Erreur c'est produite, Merci de remplir tous les champs !");
