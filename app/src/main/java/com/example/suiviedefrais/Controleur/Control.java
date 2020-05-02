@@ -5,21 +5,15 @@ import com.example.suiviedefrais.Outils.Serializer;
 import com.example.suiviedefrais.Vue.LoginActivity;
 import android.content.Context;
 import android.util.Log;
-
 import org.json.JSONObject;
-
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.example.suiviedefrais.Outils.MesOutils.generateKey;
 
 
 public final class Control {
 
     // proprieter de la classe
     private static Map<Integer, FraisMois> listFraisMois = new HashMap<>();
-    private static String nomFic = "save.fic";
     private static Control instance = null;
     private static AccesDistant accesDistant;
     private static Context context;
@@ -76,6 +70,11 @@ public final class Control {
         ((LoginActivity) getMainActivity()).isConnected();
     }
 
+    /**
+     * Permet d'afficher un message (de type toast) dans loginActivity et de reactiver le btn d'envoie des donnees
+     * @param message String : le message a afficher
+     * @param stateBtn Boolean : True pour activer le btn
+     */
     public void displayMessageInLogin(String message, Boolean stateBtn){
         ((LoginActivity) getMainActivity()).displayToast(message);
         if (stateBtn) {
@@ -110,43 +109,59 @@ public final class Control {
         accesDistant.connection(username, password);
     }
 
+    /**
+     * Getter
+     * @return la valeur de username
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    /**
+     * Setter
+     * @param username la nouvelle valeur a initialiser
+     */
+    private void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Getter
+     * @return la valeur de password
+     */
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    /**
+     * Setter
+     * @param password la nouvelle valeur a initialiser
+     */
+    private void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Permet de recupere les donnes serialiser
+     * @param context le context a utiliser pour la deserialisation
+     */
     private static void recupSerialize(Context context){
-
         listFraisMois = (HashMap) Serializer.deSerialize(context);
-        //listFraisMois = new HashMap<>();
-        //Serializer.serialize(listFraisMois, context);
-        Log.d("Controleur", "recupSerialize listefraisMois recuperer");
-            // teste
-        Calendar c = Calendar.getInstance();
-        Integer key = generateKey(c.get(Calendar.YEAR), c.get(Calendar.MONTH));
         try {
             Log.d("Controleur", "recupSerialize listefraisMois recuperer String Object -> " + listFraisMois.toString());
         } catch (NullPointerException e){
             // le fichier n'existe pas ou les donnees contenu dedans pose un probleme on remes tous a zero
             Log.d("Controleur", "Une erreur c est produite sur la deserialisation");
             listFraisMois = new HashMap<>();
-
-            //listFraisMois.put(key, new FraisMois(c.get(Calendar.YEAR), c.get(Calendar.MONTH)));
         }
 
     }
 
+    /**
+     * Verifie si une clee existe ou non dans listFraisMois
+     * @param key Integer : la clef a verifier
+     * @return Boolean : True en cas de succes, False en cas d'echec
+     */
     public boolean checkIfKeyExist(Integer key) {
         try {
             return listFraisMois.containsKey(key);
@@ -155,16 +170,30 @@ public final class Control {
         }
     }
 
+    /**
+     * Permet d'inserer un nouveaux frais forfaitaire dans la liste des frais mais
+     * @param key Integer : la clef a utiliser
+     * @param fraisF FraisMois : Un object de type FraisMois
+     */
     public void insertDataIntoFraisF(Integer key, FraisMois fraisF) {
         listFraisMois.put(key, fraisF);
         // on sauvegarde les donnees en local
         Serializer.serialize(listFraisMois, context);
     }
 
+    /**
+     * Getter
+     * @return la valeur de listFraisMois
+     */
     public Map<Integer, FraisMois> getListFraisMois() {
         return listFraisMois;
     }
 
+    /**
+     * Getter
+     * @param key Integer : la clef a utiliser pour retrouver les donnes
+     * @return la valeur de l'object dans listFraisMois
+     */
     public FraisMois getData(Integer key) {
         if (listFraisMois.containsKey(key)) {
             return listFraisMois.get(key);
@@ -173,6 +202,9 @@ public final class Control {
         return null;
     }
 
+    /**
+     * Permet d'envoyer les donnees au serveur de control
+     */
     public void sendDataToServer() {
         // on verifie si la liste n'est pas vide
         if (getLenListFraisMois() > 0) {
@@ -192,6 +224,10 @@ public final class Control {
 
     }
 
+    /**
+     * Permet de reinitialiser les donnes contenu dans listFraisMois (remise a zero) et de serialiser listFraisMois
+     * pour sauvegarder
+     */
     public void reinitializeData() {
         // on reinitialise l'object
         listFraisMois = new HashMap<>();
@@ -199,6 +235,10 @@ public final class Control {
         Serializer.serialize(listFraisMois, context);
     }
 
+    /**
+     * Getter
+     * @return Ineteger : la taille de listFraisMois
+     */
     public Integer getLenListFraisMois(){
         return listFraisMois.size();
     }

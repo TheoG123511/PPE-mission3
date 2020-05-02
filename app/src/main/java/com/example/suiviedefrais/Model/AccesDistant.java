@@ -15,7 +15,7 @@ public class AccesDistant implements AsyncResponse {
     private static final String SERVEUR = "http://192.168.56.1/GsbApi/Api.php";
     // propriété
     private Control control;
-    private List<String> list = new ArrayList<String>();
+    private List<String> list = new ArrayList<>();
     /***
      * Constructeur de la classe
      */
@@ -47,11 +47,9 @@ public class AccesDistant implements AsyncResponse {
                 }
                 } else if (function.equals("insertNewFrais")) {
 
-                    Log.d("AccesDistant", "Fonction insertNewFrais detected -> " + output.toString());
                     int keyFrais = info.getInt("KeyObject");
                     String year = info.getString("Year");
                     String month = info.getString("Month");
-                    Log.d("AccesDistant", "keyObject = " + Integer.toString(keyFrais));
                     JSONObject KM = info.getJSONObject("KM");
                     if (KM.has("Error")) {
                         String error = KM.getString("Error");
@@ -94,7 +92,7 @@ public class AccesDistant implements AsyncResponse {
                     control.getListFraisMois().remove(keyFrais);
                     // si la liste contient des erreur on les affiche
                     if (list.size() > 0){
-                        control.displayMessageInLogin(listToString(list), false);
+                        control.displayMessageInLogin(listToString(), false);
                     }
                     // on a fini la syncronisation
                     if (control.getLenListFraisMois() == 0){
@@ -137,8 +135,6 @@ public class AccesDistant implements AsyncResponse {
         AccesHTTP accesDonnes = new AccesHTTP(SERVEUR, method);
         // lien de delegation
         accesDonnes.delegate = this;
-        //control.setUsername("lvillachane");
-        //control.setPassword("jux7g");
         // on insert les donnees de connection
         accesDonnes.addParam("username", control.getUsername(), true);
         accesDonnes.addParam("password", control.getPassword(), true);
@@ -148,11 +144,19 @@ public class AccesDistant implements AsyncResponse {
         accesDonnes.execute();
     }
 
-    public void setList(List<String> list) {
+    /**
+     * Setter sur la valeur list de la classe (attribut permettant de gerer les erreurs)
+     * @param list : une liste
+     */
+    private void setList(List<String> list) {
         this.list = list;
     }
 
-    private String listToString(List<String> listError){
+    /**
+     * Permet de transformer une liste en string
+     * @return String : une string sous forme de (valeur1 \n valeur2 \n valeur3 \n ...)
+     */
+    private String listToString(){
         String listString = "";
         for (String s : list)
         {

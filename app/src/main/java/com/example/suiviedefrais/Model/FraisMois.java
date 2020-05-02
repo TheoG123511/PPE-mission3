@@ -1,12 +1,8 @@
 package com.example.suiviedefrais.Model;
-
 import android.util.Log;
-
 import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import static com.example.suiviedefrais.Outils.MesOutils.generateKey;
 
 /**

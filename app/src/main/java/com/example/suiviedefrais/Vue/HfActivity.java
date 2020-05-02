@@ -1,5 +1,4 @@
 package com.example.suiviedefrais.Vue;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +30,9 @@ public class HfActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Permet de detecter quand la date est changer par l'utilisateur
+     */
     private void dateChanged() {
         final DatePicker uneDate = findViewById(R.id.datHf);
         uneDate.init(uneDate.getYear(), uneDate.getMonth(), uneDate.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
@@ -70,12 +72,18 @@ public class HfActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet de revenir sur le menu principal
+     */
     private void backToMainMenu() {
         displayMessage("Frais Hors Forfait ajouter avec succes !");
         Intent intent = new Intent(HfActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Permet d'ajouter un frais hors forfait et de le sauvegarder'
+     */
     private void validerFraisHfBtn(){
         (findViewById(R.id.cmdHfAjouter)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
@@ -118,6 +126,12 @@ public class HfActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet de verifier si les valeur rentrer par l'utilisateur sont valide
+     * @param motif String : le motif du frais hf
+     * @param montant float : le montant du frais hf
+     * @return boolean : True en cas de succes, False en cas d'echec
+     */
     private boolean checkDataInToEdit(String motif, float montant) {
         // recuperation des donnees
         if (montant <= 0) {
@@ -131,6 +145,10 @@ public class HfActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Permet d'afficher un message
+     * @param message String : le message a afficher
+     */
     private void displayMessage(String message) {
         Toast.makeText(HfActivity.this, message, Toast.LENGTH_SHORT).show();
     }

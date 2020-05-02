@@ -1,7 +1,5 @@
 package com.example.suiviedefrais.Vue;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +10,12 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Model.FraisMois;
 import com.example.suiviedefrais.Outils.Global;
 import com.example.suiviedefrais.R;
-
 import static com.example.suiviedefrais.Outils.MesOutils.generateKey;
+
 
 public class activity_repas extends AppCompatActivity {
 
@@ -34,6 +31,9 @@ public class activity_repas extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Permet de detecter quand la date est changer par l'utilisateur
+     */
     private void dateChanged() {
         final DatePicker uneDate = findViewById(R.id.dateRepas);
         uneDate.init(uneDate.getYear(), uneDate.getMonth(), uneDate.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
@@ -74,6 +74,9 @@ public class activity_repas extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet d'ajouter 1 a la quantité
+     */
     private void addOneBtnRepas(){
         (findViewById(R.id.cmdRepasPlus)).setOnClickListener(new Button.OnClickListener() {
             @SuppressLint("DefaultLocale")
@@ -84,8 +87,12 @@ public class activity_repas extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet d'enlever 1 a la quantité
+     */
     private void lessOneBtnRepas(){
         (findViewById(R.id.cmdRepasMoins)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity -= 1;
                 if (quantity < 0) {
@@ -96,6 +103,9 @@ public class activity_repas extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet de mettre a jours la quantiter dans la vue
+     */
     @SuppressLint("DefaultLocale")
     private void updateFrais() {
         // on recupere les valeurs
@@ -107,6 +117,7 @@ public class activity_repas extends AppCompatActivity {
         // on recupere les donnees depuis le controleur
         if (control.checkIfKeyExist(key)){
             FraisMois frais = control.getData(key);
+            assert frais != null;
             Log.d("update", "data = " + frais.getRepas().toString());
             quantity = frais.getRepas();
             txtRepas.setText(String.format("%d", frais.getRepas()));
@@ -116,6 +127,9 @@ public class activity_repas extends AppCompatActivity {
         }
     }
 
+    /**
+     * Permet d'ajouter un frais et de le sauvegarder'
+     */
     private void validerFraisBtnRepas(){
         (findViewById(R.id.cmdRepasValider)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
@@ -147,6 +161,9 @@ public class activity_repas extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet de revenir sur le menu principal
+     */
     private void backToMainMenu() {
         if (quantity != 0) {
             Toast.makeText(activity_repas.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();

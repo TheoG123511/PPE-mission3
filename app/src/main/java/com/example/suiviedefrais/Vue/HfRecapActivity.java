@@ -1,5 +1,4 @@
 package com.example.suiviedefrais.Vue;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +30,9 @@ public class HfRecapActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Permet de detecter quand la date est changer par l'utilisateur
+     */
     private void dateChanged() {
         final DatePicker uneDate = findViewById(R.id.datHfRecap);
         uneDate.init(uneDate.getYear(), uneDate.getMonth(), uneDate.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
@@ -91,6 +93,10 @@ public class HfRecapActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
+    /**
+     * Permet d'afficher un message
+     * @param message String : le message a afficher
+     */
     private void displayMessage(String message) {
         Toast.makeText(HfRecapActivity.this, message, Toast.LENGTH_LONG).show();
     }

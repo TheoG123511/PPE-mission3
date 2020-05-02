@@ -1,7 +1,5 @@
 package com.example.suiviedefrais.Vue;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +10,10 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Model.FraisMois;
 import com.example.suiviedefrais.Outils.Global;
 import com.example.suiviedefrais.R;
-
 import static com.example.suiviedefrais.Outils.MesOutils.generateKey;
 
 public class NuitActivity extends AppCompatActivity {
@@ -34,6 +30,9 @@ public class NuitActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Permet de detecter quand la date est changer par l'utilisateur
+     */
     private void dateChanged() {
         final DatePicker uneDate = findViewById(R.id.datNuit);
         uneDate.init(uneDate.getYear(), uneDate.getMonth(), uneDate.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
@@ -74,6 +73,9 @@ public class NuitActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet d'ajouter 1 a la quantité
+     */
     private void addOneBtnNuit(){
         (findViewById(R.id.cmdNuitPlus)).setOnClickListener(new Button.OnClickListener() {
             @SuppressLint("DefaultLocale")
@@ -84,6 +86,9 @@ public class NuitActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet d'enlever 1 a la quantité
+     */
     private void lessOneBtnNuit(){
         (findViewById(R.id.cmdNuitMoins)).setOnClickListener(new Button.OnClickListener() {
             @SuppressLint("DefaultLocale")
@@ -97,6 +102,9 @@ public class NuitActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet de mettre a jours la quantiter dans la vue
+     */
     @SuppressLint("DefaultLocale")
     private void updateFrais() {
         // on recupere les valeurs
@@ -108,6 +116,7 @@ public class NuitActivity extends AppCompatActivity {
         // on recupere les donnees depuis le controleur
         if (control.checkIfKeyExist(key)){
             FraisMois frais = control.getData(key);
+            assert frais != null;
             Log.d("update", "data = " + frais.getNuitee().toString());
             quantity = frais.getNuitee();
             txtNuit.setText(String.format("%d", frais.getNuitee()));
@@ -117,6 +126,9 @@ public class NuitActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Permet d'ajouter un frais et de le sauvegarder'
+     */
     private void validerFraisBtnNuit(){
         (findViewById(R.id.cmdNuitValider)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
@@ -148,6 +160,9 @@ public class NuitActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet de revenir sur le menu principal
+     */
     private void backToMainMenu() {
         if (quantity != 0) {
             Toast.makeText(NuitActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();

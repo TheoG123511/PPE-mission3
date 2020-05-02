@@ -1,7 +1,5 @@
 package com.example.suiviedefrais.Vue;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +10,6 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Model.FraisMois;
 import com.example.suiviedefrais.Outils.Global;
@@ -34,6 +31,9 @@ public class KmActivity extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Permet de detecter quand la date est changer par l'utilisateur
+     */
     private void dateChanged() {
         final DatePicker uneDate = findViewById(R.id.datKm);
         uneDate.init(uneDate.getYear(), uneDate.getMonth(), uneDate.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
@@ -73,8 +73,12 @@ public class KmActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet d'ajouter 1 a la quantité
+     */
     private void addOneBtnKm(){
         (findViewById(R.id.cmdKmPlus)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity += 1;
                 txtKm.setText(String.format("%d", quantity));
@@ -82,8 +86,12 @@ public class KmActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet d'enlever 1 a la quantité
+     */
     private void lessOneBtnKm(){
         (findViewById(R.id.cmdKmMoins)).setOnClickListener(new Button.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             public void onClick(View v){
                 quantity -= 1;
                 if (quantity < 0) {
@@ -94,6 +102,9 @@ public class KmActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet d'ajouter un frais et de le sauvegarder'
+     */
     private void validerFraisBtnKm(){
         (findViewById(R.id.cmdKmValider)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
@@ -125,6 +136,9 @@ public class KmActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Permet de mettre a jours la quantiter dans la vue
+     */
     @SuppressLint("DefaultLocale")
     private void updateFrais() {
         // on recupere les valeurs
@@ -135,6 +149,7 @@ public class KmActivity extends AppCompatActivity {
         // on recupere les donnees depuis le controleur
         if (control.checkIfKeyExist(key)){
             FraisMois fraisKm = control.getData(key);
+            assert fraisKm != null;
             Log.d("update", "data = " + fraisKm.getKm());
             quantity = fraisKm.getKm();
             txtKm.setText(String.format("%d", fraisKm.getKm()));
@@ -144,6 +159,9 @@ public class KmActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Permet de revenir sur le menu principal
+     */
     private void backToMainMenu() {
         if (quantity != 0) {
             Toast.makeText(KmActivity.this, "Frais Ajouter avec Succes !", Toast.LENGTH_SHORT).show();

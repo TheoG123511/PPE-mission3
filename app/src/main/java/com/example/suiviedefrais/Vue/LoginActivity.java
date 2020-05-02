@@ -1,19 +1,14 @@
 package com.example.suiviedefrais.Vue;
 import com.example.suiviedefrais.Controleur.Control;
-import com.example.suiviedefrais.Model.FraisMois;
 import com.example.suiviedefrais.R;
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -68,21 +63,19 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-           // si on est arriver a se connecter on envoie les donnees
-            //controle.sendDataToServer();
         }
     }
 
     /**
-     * Ecoute le click sur l'ImageButton btnLogin, permet de se connecter a l'application
+     * Ecoute le click sur l'ImageButton btnLogin, permet de se connecter au serveur
      */
     private void listenOnBtnLogin(){
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
                 btnLogin.setEnabled(false);
                 try{
-                    //controle.connection(txtUsername.getText().toString(), txtPassword.getText().toString());
-                    controle.connection("lvillachane", "jux7g");
+                    controle.connection(txtUsername.getText().toString(), txtPassword.getText().toString());
+                    //controle.connection("lvillachane", "jux7g");
                 }catch (Exception e){
                     Log.d("LoginActivity", "Erreur dans la fonction listenOnBtnLogin() -> message : " + e.getMessage());
                     displayToast("Une Erreur c'est produite, Merci de remplir tous les champs !");
