@@ -1,8 +1,7 @@
 package com.example.suiviedefrais.Controleur;
 import com.example.suiviedefrais.Model.AccesDistant;
 import com.example.suiviedefrais.Model.FraisMois;
-import com.example.suiviedefrais.Model.Global;
-import com.example.suiviedefrais.Model.Serializer;
+import com.example.suiviedefrais.Outils.Serializer;
 import com.example.suiviedefrais.Vue.LoginActivity;
 import android.content.Context;
 import android.util.Log;

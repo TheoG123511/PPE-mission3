@@ -73,7 +73,6 @@ public class AccesDistant implements AsyncResponse {
                         list.add(String.format("[%s-%s] Frais de Nuitée -> %s", month,  year, error));
                     }
                     Log.d("AccesDistant", "KM = " + KM.toString() + "\nREP = " + REP.toString() + "\nETP = " + ETP.toString() + "\nNUI = " + NUI.toString());
-                    Log.d("AccesDistant", "List data len = " + control.getLenListFraisMois().toString());
                     // on verifie si l'object a des frais hf
                     try {
                         JSONObject jsonObject = info.getJSONObject("fraisHorsForfait");
@@ -86,9 +85,6 @@ public class AccesDistant implements AsyncResponse {
                                     String error = ((JSONObject) jsonObject.get(key)).getString("Error");
                                     list.add(String.format("[%s] Frais Hors Forfait -> %s", date, error));
                                 }
-
-                                Log.d("AccesDistant While", "Data = " + jsonObject.get(key).toString());
-
                             }
                         }
                     } catch (JSONException e) {
@@ -96,7 +92,10 @@ public class AccesDistant implements AsyncResponse {
                     }
                     // on supprime l'object
                     control.getListFraisMois().remove(keyFrais);
-                    control.displayMessageInLogin(listToString(list), false);
+                    // si la liste contient des erreur on les affiche
+                    if (list.size() > 0){
+                        control.displayMessageInLogin(listToString(list), false);
+                    }
                     // on a fini la syncronisation
                     if (control.getLenListFraisMois() == 0){
                         // on reinitialise les donnees serializer

@@ -1,4 +1,4 @@
-package com.example.suiviedefrais.Model;
+package com.example.suiviedefrais.Outils;
 
 import android.content.res.Resources;
 import android.util.Log;
@@ -6,11 +6,12 @@ import android.view.View;
 import android.widget.DatePicker;
 import java.lang.reflect.Field;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class Global {
 
     // tableau d'informations mémorisées
-    public static Hashtable<Integer, FraisMois> listFraisMois = new Hashtable<>();
+    //public static Hashtable<Integer, FraisMois> listFraisMois = new Hashtable<>();
     /* Retrait du type de l'Hashtable (Optimisation Android Studio)
      * Original : Typage explicit =
 	 * public static Hashtable<Integer, FraisMois> listFraisMois = new Hashtable<Integer, FraisMois>();
@@ -38,7 +39,7 @@ public class Global {
                 }
             }
         } catch (SecurityException | IllegalArgumentException e) {
-            Log.d("ERROR", e.getMessage());
+            Log.d("ERROR", Objects.requireNonNull(e.getMessage()));
         }
     }
 

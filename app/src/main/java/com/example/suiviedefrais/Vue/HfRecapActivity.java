@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Model.FraisHf;
-import com.example.suiviedefrais.Model.Global;
+import com.example.suiviedefrais.Outils.Global;
 import com.example.suiviedefrais.R;
 import java.util.ArrayList;
 import java.util.List;

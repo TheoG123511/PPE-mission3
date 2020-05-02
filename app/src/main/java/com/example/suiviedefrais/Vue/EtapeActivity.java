@@ -3,7 +3,7 @@ package com.example.suiviedefrais.Vue;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.suiviedefrais.Controleur.Control;
 import com.example.suiviedefrais.Model.FraisMois;
-import com.example.suiviedefrais.Model.Global;
+import com.example.suiviedefrais.Outils.Global;
 import com.example.suiviedefrais.R;
 
 import android.annotation.SuppressLint;
