@@ -12,7 +12,8 @@ import java.util.List;
 
 public class AccesDistant implements AsyncResponse {
     // constante
-    private static final String SERVEUR = "http://192.168.56.1/GsbApi/Api.php";
+    //private static final String SERVEUR = "http://192.168.56.1/GsbApi/Api.php";
+    private static final String SERVEUR = "https://api.gsblab.com/";
     // propriété
     private Control control;
     private List<String> list = new ArrayList<>();
@@ -103,10 +104,13 @@ public class AccesDistant implements AsyncResponse {
                         // on lance Main Activity
                         control.displayMessageInLogin("Syncronisation effectuer avec Succes !", false);
                         control.runDashBoard(true);
+                    } else {
+                        control.displayMessageInLogin("Syncronisation avec le serveur en cours ...", false);
                     }
                 }
         } catch (Exception e){
             Log.d("AccesDistant", "Erreur dans la fonction processFinish() -> message : " + e.getMessage());
+            control.displayMessageInLogin("Impossible de se connecter au serveur de controle. Merci de réessayer ultérieurement !", true);
         }
     }
 
